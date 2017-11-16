@@ -12,9 +12,10 @@ ENV JAVA_VERSION=8 \
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Install utils
-RUN yum update -y
-RUN yum install -y wget
-
+RUN yum update -y  && \
+    yum install -y wget  && \
+    yum install -y unzip
+    
 # Change to tmp folder
 WORKDIR /tmp
 
