@@ -35,8 +35,8 @@ RUN wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebac
 # Optimize JDK8 size (No JavaFX, No visual)
 RUN rm -rf "$JAVA_HOME/"*src.zip && \
     rm -rf "$JAVA_HOME/db/"* && \
-    rm -rf "$JAVA_HOME/lib/missioncontrol"* && \
-    rm -rf "$JAVA_HOME/lib/visualvm"* && \
+    rm -rf "$JAVA_HOME/lib/missioncontrol/"* && \
+    rm -rf "$JAVA_HOME/lib/visualvm/"* && \
     rm -rf "$JAVA_HOME/jre/bin/jfxwebkit.dll"
     
 # Add executables to path
