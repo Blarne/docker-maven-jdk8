@@ -68,4 +68,6 @@ RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/mvn/bin/mvn" 1 && \
     update-alternatives --set "mvn" "/opt/mvn/bin/mvn" 
 
 # Cleaning
-RUN rm -rf /tmp/*
+RUN rm -rf /tmp/* && \
+    yum remove -y wget && \
+    yum remove -y unzip
