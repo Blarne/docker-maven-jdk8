@@ -26,13 +26,19 @@ RUN wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebac
     mkdir -p "/usr/lib/jvm" && \
     mv "/tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}" "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" && \
     ln -s "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" "$JAVA_HOME" && \
-    rm -rf "$JAVA_HOME/"*src.zip && \
     wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
         "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip" && \
     unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
     rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
     rm /tmp/*
-
+    
+# Optimize JDK8 size (No JavaFX, No visual)
+RUN rm -rf "$JAVA_HOME/"*src.zip && \
+    rm -rf "$JAVA_HOME/db/"* && \
+    rm -rf "$JAVA_HOME/lib/missioncontrol"* && \
+    rm -rf "$JAVA_HOME/lib/visualvm"* && \
+    rm -rf "$JAVA_HOME/jre/bin/jfxwebkit.dll"
+    
 # Add executables to path
 RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 && \
     update-alternatives --set "java" "/opt/java/bin/java" && \
