@@ -33,7 +33,7 @@ RUN wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebac
 # Optimize JDK8 size 
 RUN rm -rf "$JAVA_HOME/"*src.zip && \
     rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
-    rm /tmp/*
+    rm -rf /tmp/*
     
 # Add executables to path
 RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 && \
@@ -68,4 +68,4 @@ RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/mvn/bin/mvn" 1 && \
     update-alternatives --set "mvn" "/opt/mvn/bin/mvn" 
 
 # Cleaning
-RUN rm -f /tmp/*
+RUN rm -rf /tmp/*
