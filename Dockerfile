@@ -12,22 +12,23 @@ ENV JAVA_VERSION=8 \
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Install utils
-RUN yum install -y wget  && \
-    yum install -y unzip
+RUN yum update -y && \ 
+    yum install -y wget && \
+    yum install -y unzip && \
+    yum clean all
     
 # Change to tmp folder
 WORKDIR /tmp
 
 # Download and extract jdk to opt folder
 RUN wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    tar -xzf "jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    mkdir -p "/usr/lib/jvm" && \
-    mv "/tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}" "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" && \
-    ln -s "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" "$JAVA_HOME" && \
+        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.rpm" && \
+    yum localinstall -y jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.rpm  && \
+    ln -s "/usr/java/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}" "$JAVA_HOME" && \
     wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
         "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip" && \
-    unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" 
+    unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
+    rm -rf "jce_policy-${JAVA_VERSION}.zip"
     
 # Optimize JDK8 size 
 RUN rm -rf "$JAVA_HOME/"*src.zip && \
@@ -50,9 +51,6 @@ ENV MAVEN_VERSION=3.5.2
 ENV MAVEN_HOME=/opt/mvn
 ENV PATH $PATH:$MAVEN_HOME/bin
 
-# Change to tmp folder
-WORKDIR /tmp
-
 # Download and extract maven to opt folder
 RUN wget --no-check-certificate --no-cookies https://repo1.maven.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}/apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
     wget --no-check-certificate --no-cookies https://repo1.maven.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}/apache-maven-${MAVEN_VERSION}-bin.tar.gz.md5 && \
@@ -67,4 +65,14 @@ RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/mvn/bin/mvn" 1 && \
     update-alternatives --set "mvn" "/opt/mvn/bin/mvn" 
 
 # Cleaning
-RUN rm -rf /tmp/*
+RUN rm -rf /tmp/* && \
+    rm -rf /var/cache/yum
+
+# Set environment variables.
+ENV HOME /root
+
+# Define working directory.
+WORKDIR /root
+
+# Define default command.
+CMD ["bash"]
