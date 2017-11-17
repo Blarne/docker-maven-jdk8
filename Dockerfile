@@ -51,7 +51,7 @@ RUN rm -rf $JAVA_HOME/*src.zip \
            $JAVA_HOME/jre/lib/amd64/libglass.so \
            $JAVA_HOME/jre/lib/amd64/libgstreamer-lite.so \
            $JAVA_HOME/jre/lib/amd64/libjavafx*.so \
-           $JAVA_HOME/jre/lib/amd64/libjfx*.so \
+           $JAVA_HOME/jre/lib/amd64/libjfx*.so
     
 # Add executables to path
 RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 && \
