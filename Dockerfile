@@ -15,6 +15,7 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN yum update -y && \ 
     yum install -y wget && \
     yum install -y unzip && \
+    yum install -y git && \
     yum clean all
     
 # Change to tmp folder
